@@ -1,0 +1,24 @@
+todo:
+- name: Build in docker
+  args:
+   - dockerArch: amd64
+     os        : linux
+     arch      : x64
+     version   : 17
+     dist      : nightly
+     output    : oaf-linux-x64_64.tgz
+  - dockerArch: arm64
+    os        : linux
+    arch      : aarch64
+    version   : 17
+    dist      : nightly
+    output    : oaf-linux-aarch64.tgz
+
+jobs:
+- name: Build in docker
+  lang: shell
+  typeArgs:
+    shellPrefix: build
+    single     : true
+  exec: |
+    docker run --rm -i --pull always -v `pwd`:/output --platform linux/{{dockerArch}} openaf/oaf:ubi-t8 -c '$sh("sudo microdnf -y install tar && mkdir -p /tmp/oaf && cd /tmp/oaf && /openaf/ojob ojob.io/oaf/packBin os={{os}} arch={{arch}} version={{version}} dist={{dist}} && ln -s oaf ojob && ln -s oaf oafc && ln -s oaf opack && ln -s oaf oaf-sb && ln -s oaf ojob-sb && tar czf /tmp/{{output}}.tgz . && mv /tmp/{{output}}.tgz /output/{{output}}.tgz").exec()'

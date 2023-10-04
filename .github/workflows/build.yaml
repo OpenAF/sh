@@ -70,18 +70,8 @@ jobs:
       env :
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        def : |
-          todo:
-          - (fn    ): io.mkdir
-            args    :
-              aNewDirectory: dist/Linux/x86_64
-          - (run   ): ojob.io/oaf/packBin
-            ((args)):
-              os: linux
-              arch: x64
-              version: 17
-              dist   : nightly
-              output : /dist/Linux/x86_64/oaf
+        ojob: build.yaml
+        dist: nightly
 
     - name: Test
       uses: openaf/ojob-action@v4
@@ -95,6 +85,7 @@ jobs:
               aPath: .
             ((key )): out
           - (output): out
+        dist: nightly
 
     # -------------
     # - name: Checkin
