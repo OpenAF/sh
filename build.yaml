@@ -1,24 +1,54 @@
 todo:
-- name: Build in docker
+- name: Build
   args:
-  - dockerArch: amd64
-    os        : linux
-    arch      : x64
-    version   : 17
-    dist      : nightly
-    output    : oaf-linux-x64_64.tgz
+  # - dockerArch: amd64
+  #   os        : linux
+  #   arch      : x64
+  #   version   : 17
+  #   dist      : nightly
+  #   output    : oaf-linux-x64_64
   - dockerArch: arm64
     os        : linux
     arch      : aarch64
     version   : 17
     dist      : nightly
-    output    : oaf-linux-aarch64.tgz
+    output    : oaf-linux-aarch64
+    main      : oaf_linux_x64_17_nightly
 
 jobs:
-- name: Build in docker
+# -----------
+- name: Build 
   lang: shell
   typeArgs:
     shellPrefix: build
     single     : true
+  from: Get OpenAF path
   exec: |
-    docker run --rm -i --pull always -v `pwd`:/output --platform linux/{{dockerArch}} openaf/oaf:ubi-t8 -c '$sh("sudo microdnf -y install tar && mkdir -p /tmp/oaf && cd /tmp/oaf && /openaf/ojob ojob.io/oaf/packBin os={{os}} arch={{arch}} version={{version}} dist={{dist}} && ln -s oaf ojob && ln -s oaf oafc && ln -s oaf opack && ln -s oaf oaf-sb && ln -s oaf ojob-sb && tar czf /tmp/{{output}}.tgz . && mv /tmp/{{output}}.tgz /output/{{output}}.tgz").exec()'
+    CDIR=`pwd`
+    mkdir -p /tmp/__oaf_{{os}}_{{arch}}_{{version}}_{{dist}}/src
+    cd /tmp/__oaf_{{os}}_{{arch}}_{{version}}_{{dist}}/src
+    {{oafpath}}ojob ojob.io/java/download type=jre os={{os}} arch={{arch}} version={{version}} output=jre.tgz
+    tar xzf jre.tgz
+    rm jre.tgz
+    curl https://openaf.io/{{dist}}/openaf.jar.repacked -o openaf.jar
+    {{#if main}}
+    cp /tmp/__{{main}}/o* .
+    cp /tmp/__{{main}}/u* .
+    echo find . -type f ! -name 'openaf.jar' -exec sed -i "s/JAVA_HOME=\"\$DIR\/jre\"/JAVA_HOME=\"\$DIR\/`find . | egrep /bin/java$ | sed 's/\/bin\/java$//' | sed 's/^.\///'`\"/" {} +
+    {{else}}
+    `find . | egrep /bin/java$` -jar openaf.jar --install
+    {{/if}}
+    cd ..
+    {{oafpath}}ojob ojob.io/unix/genSelfExtract file=oaf path=src setup=\$0 tmppath=/tmp/_oaf_{{dist}}_`java -jar src/openaf.jar -c 'printnl(getVersion())'`
+    rm -rf src
+    ln -s oaf ojob
+    ln -s oaf oafc
+    ln -s oaf opack
+    ln -s oaf oaf-sb
+    ln -s oaf ojob-sb
+    tar czf $CDIR/{{output}}.tgz .
+
+# ---------------------
+- name: Get OpenAF path
+  exec: |
+    args.oafpath = getOpenAFPath()

@@ -61,6 +61,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     
+    # -----------------
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
 
     ## Add here other steps
     ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
@@ -86,14 +89,3 @@ jobs:
             ((key )): out
           - (output): out
         dist: nightly
-
-    # -------------
-    # - name: Checkin
-    #   uses: openaf/ojob-action@v4
-    #   env :
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     ojob: ojob.io/git/hub/contentIn
-    #     ## Change the following arguments as needed (see https://ojob.io/git/hub/contentIn.md)
-    #     args: 'message="Automated check in" branchPrefix="auto/" title="Automated PR" paths="."'
-    #     dist: nightly
