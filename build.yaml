@@ -1,12 +1,12 @@
 todo:
 - name: Build in docker
   args:
-   - dockerArch: amd64
-     os        : linux
-     arch      : x64
-     version   : 17
-     dist      : nightly
-     output    : oaf-linux-x64_64.tgz
+  - dockerArch: amd64
+    os        : linux
+    arch      : x64
+    version   : 17
+    dist      : nightly
+    output    : oaf-linux-x64_64.tgz
   - dockerArch: arm64
     os        : linux
     arch      : aarch64
