@@ -54,7 +54,7 @@ jobs:
     - name: Cache OpenAF runtime
       uses: actions/cache@v3
       with:
-        key : oaf-nightly
+        key : oaf-t8
         path: /tmp/oaf
 
     # --------------
@@ -74,18 +74,23 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         ojob: build.yaml
-        dist: nightly
+        dist: t8
 
-    - name: Test
-      uses: openaf/ojob-action@v4
-      env :
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # ------------------------------------
+    - name: Upload output oaf-linux-x64_64
+      uses: actions/upload-artifact@v3
       with:
-        def : |
-          todo:
-          - (fn    ): listFilesRecursive
-            args    :
-              aPath: .
-            ((key )): out
-          - (output): out
-        dist: nightly
+        name: oaf-linux-x64_64
+        path: oaf-linux-x64_64.tgz
+    # -------------------------------------
+    - name: Upload output oaf-linux-aarch64
+      uses: actions/upload-artifact@v3
+      with:
+        name: oaf-linux-aarch64
+        path: oaf-linux-aarch64.tgz
+    # ----------------------------------
+    - name: Upload output oaf-mac-x64_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: oaf-mac-x64_64
+        path: oaf-mac-x64_64.tgz
