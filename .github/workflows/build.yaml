@@ -38,7 +38,7 @@ on  :
   #      default    : 'some value'
 
 jobs:
-  buildLinuxX64:
+  build:
     runs-on: ubuntu-latest 
     permissions:
       contents     : write
@@ -77,11 +77,11 @@ jobs:
         dist: t8
 
     # ------------------------------------
-    - name: Upload output oaf-linux-x64_64
+    - name: Upload output oaf-linux-x86_64
       uses: actions/upload-artifact@v3
       with:
-        name: oaf-linux-x64_64
-        path: oaf-linux-x64_64.tgz
+        name: oaf-linux-x86_64
+        path: oaf-linux-x86_64.tgz
     # -------------------------------------
     - name: Upload output oaf-linux-aarch64
       uses: actions/upload-artifact@v3
@@ -89,8 +89,14 @@ jobs:
         name: oaf-linux-aarch64
         path: oaf-linux-aarch64.tgz
     # ----------------------------------
-    - name: Upload output oaf-mac-x64_64
+    - name: Upload output oaf-mac-x86_64
       uses: actions/upload-artifact@v3
       with:
-        name: oaf-mac-x64_64
-        path: oaf-mac-x64_64.tgz
+        name: oaf-mac-x86_64
+        path: oaf-mac-x86_64.tgz
+    # ----------------------------------
+    - name: Upload output oaf-mac-x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: oaf-mac-aarch64
+        path: oaf-mac-aarch64.tgz

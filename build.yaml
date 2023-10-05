@@ -6,7 +6,7 @@ todo:
     arch      : x64
     version   : 17
     dist      : t8
-    output    : oaf-linux-x64_64
+    output    : oaf-linux-x86_64
 
 - name: Build
   args:
@@ -22,7 +22,7 @@ todo:
     arch      : x64
     version   : 17
     dist      : t8
-    output    : oaf-mac-x64_64
+    output    : oaf-mac-x86_64
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : mac
@@ -84,7 +84,7 @@ jobs:
       $from(io.listFiles(args.FOLDER + "/src").files)
       .notEquals("filename", "openaf.jar")
       .select(f => {
-
+        io.cp(f.canonicalPath, "/tmp/_oaf_scripts/" + f.filename)
       })
     } else {
       // List files that aren't openaf.jar
