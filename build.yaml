@@ -1,24 +1,112 @@
 todo:
-- name: Build in docker
+- name: Build
   args:
-  - dockerArch: amd64
+    dockerArch: amd64
     os        : linux
     arch      : x64
     version   : 17
-    dist      : nightly
-    output    : oaf-linux-x64_64.tgz
+    dist      : t8
+    output    : oaf-linux-x64_64
+
+- name: Build
+  args:
   - dockerArch: arm64
     os        : linux
     arch      : aarch64
     version   : 17
-    dist      : nightly
-    output    : oaf-linux-aarch64.tgz
+    dist      : t8
+    output    : oaf-linux-aarch64
+    main      : /tmp/_oaf_scripts
+  - dockerArch: amd64
+    os        : mac
+    arch      : x64
+    version   : 17
+    dist      : t8
+    output    : oaf-mac-x64_64
+    main      : /tmp/_oaf_scripts
+  - dockerArch: arm64
+    os        : mac
+    arch      : aarch64
+    version   : 17
+    dist      : t8
+    output    : oaf-mac-aarch64
+    main      : /tmp/_oaf_scripts
 
 jobs:
-- name: Build in docker
+# ------------------
+- name: Build step 1
   lang: shell
   typeArgs:
-    shellPrefix: build
-    single     : true
+    shellPrefix: build1
   exec: |
-    docker run --rm -i --pull always -v `pwd`:/output --platform linux/{{dockerArch}} openaf/oaf:ubi-t8 -c '$sh("sudo microdnf -y install tar && mkdir -p /tmp/oaf && cd /tmp/oaf && /openaf/ojob ojob.io/oaf/packBin os={{os}} arch={{arch}} version={{version}} dist={{dist}} && ln -s oaf ojob && ln -s oaf oafc && ln -s oaf opack && ln -s oaf oaf-sb && ln -s oaf ojob-sb && tar czf /tmp/{{output}}.tgz . && mv /tmp/{{output}}.tgz /output/{{output}}.tgz").exec()'
+    CDIR=`pwd`
+    FOLDER=/tmp/__oaf_{{os}}_{{arch}}_{{version}}_{{dist}}
+    rm -rf $FOLDER 2> /dev/null
+    mkdir -p $FOLDER/src
+    cd $FOLDER/src
+    {{oafpath}}ojob ojob.io/java/download type=jre os={{os}} arch={{arch}} version={{version}} output=jre.tgz
+    tar xzf jre.tgz
+    rm jre.tgz
+    curl -s https://openaf.io/{{dist}}/openaf.jar.repacked -o openaf.jar
+
+    # return CDIR, FOLDER
+
+# ------------------
+- name: Build step 3
+  lang: shell
+  typeArgs:
+    shellPrefix: build3
+  exec: |
+    cd $FOLDER
+    {{oafpath}}ojob ojob.io/unix/genSelfExtract file=oaf path=src setup=\$0 tmppath=/tmp/_oaf_{{dist}}_`java -jar src/openaf.jar -c 'printnl(getVersion())'`
+    rm -rf src
+    ln -s oaf ojob
+    ln -s oaf oafc
+    ln -s oaf opack
+    ln -s oaf oaf-sb
+    ln -s oaf ojob-sb
+    tar czf $CDIR/{{output}}.tgz .
+
+# -----------
+- name: Build 
+  from: 
+  - Get OpenAF path
+  - Build step 1
+  exec: |
+    // Build step 2
+    
+    if (isUnDef(args.main)) {
+      // Find java and use it
+      $sh("`find . | egrep /bin/java$` -jar openaf.jar --install")
+      .pwd(args.FOLDER + "/src")
+      .exec()
+      io.mkdir("/tmp/_oaf_scripts")
+      $from(io.listFiles(args.FOLDER + "/src").files)
+      .notEquals("filename", "openaf.jar")
+      .select(f => {
+
+      })
+    } else {
+      // List files that aren't openaf.jar
+      $from(io.listFiles(args.main).files)
+      .notEquals("filename", "openaf.jar")
+      .select(f => {
+        // Read contents of file
+        var _c = io.readFileString(f.canonicalPath)
+
+        // Replace JAVA_HOME="$DIR/jre" by the appropriate folder
+        var whereIsJava = $sh("find . | egrep /bin/java$").pwd(args.FOLDER).get(0).stdout
+        whereIsJava = whereIsJava.replace(/^\.\//, "").replace(/\/bin\/java/, "")
+        _c = _c.replace(/JAVA_HOME=\"\$DIR\/jre\"/, "JAVA_HOME=\"\$DIR\/" + whereIsJava + "\"")
+
+        // Write changed contents 
+        io.writeFileString(args.FOLDER + "/" + f.filename, _c)
+      })
+    }
+  to  :
+  - Build step 3
+
+# ---------------------
+- name: Get OpenAF path
+  exec: |
+    args.oafpath = getOpenAFPath()
