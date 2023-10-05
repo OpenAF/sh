@@ -58,7 +58,7 @@ jobs:
     shellPrefix: build3
   exec: |
     cd $FOLDER
-    {{oafpath}}ojob ojob.io/unix/genSelfExtract file=oaf path=src setup=\$0 tmppath=/tmp/_oaf_{{dist}}_`java -jar src/openaf.jar -c 'printnl(getVersion())'`
+    {{oafpath}}ojob ojob.io/unix/genSelfExtract file=oaf path=src setup=\$0 tmppath=/tmp/_oaf_{{os}}_{{arch}}_{{version}}_{{dist}}`java -jar src/openaf.jar -c 'printnl(getVersion())'`
     rm -rf src
     ln -s oaf ojob
     ln -s oaf oafc
@@ -80,9 +80,11 @@ jobs:
       $sh("`find . | egrep /bin/java$` -jar openaf.jar --install")
       .pwd(args.FOLDER + "/src")
       .exec()
+      io.rm("/tmp/_oaf_scripts")
       io.mkdir("/tmp/_oaf_scripts")
       $from(io.listFiles(args.FOLDER + "/src").files)
       .notEquals("filename", "openaf.jar")
+      .equals("isFile", true)
       .select(f => {
         io.cp(f.canonicalPath, "/tmp/_oaf_scripts/" + f.filename)
       })
@@ -90,17 +92,20 @@ jobs:
       // List files that aren't openaf.jar
       $from(io.listFiles(args.main).files)
       .notEquals("filename", "openaf.jar")
+      .equals("isFile", true)
       .select(f => {
         // Read contents of file
         var _c = io.readFileString(f.canonicalPath)
 
         // Replace JAVA_HOME="$DIR/jre" by the appropriate folder
-        var whereIsJava = $sh("find . | egrep /bin/java$").pwd(args.FOLDER).get(0).stdout
+        var whereIsJava = $sh("find . | egrep /bin/java$").pwd(args.FOLDER + "/src").get(0).stdout.replace(/\n/g, "")
         whereIsJava = whereIsJava.replace(/^\.\//, "").replace(/\/bin\/java/, "")
         _c = _c.replace(/JAVA_HOME=\"\$DIR\/jre\"/, "JAVA_HOME=\"\$DIR\/" + whereIsJava + "\"")
 
         // Write changed contents 
-        io.writeFileString(args.FOLDER + "/" + f.filename, _c)
+        log(" writing " + f.filename + " in " + args.FOLDER + "/src")
+        io.writeFileString(args.FOLDER + "/src/" + f.filename, _c)
+        $sh("chmod a+x " + args.FOLDER + "/src/" + f.filename).exec()
       })
     }
   to  :
