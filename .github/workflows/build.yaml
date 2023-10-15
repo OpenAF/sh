@@ -54,7 +54,7 @@ jobs:
     - name: Cache OpenAF runtime
       uses: actions/cache@v3
       with:
-        key : oaf-t8
+        key : oaf-nightly
         path: /tmp/oaf
 
     # --------------
@@ -74,7 +74,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         ojob: build.yaml
-        dist: t8
+        dist: nightly
 
     # ------------------------------------
     - name: Upload output oaf-linux-x86_64
