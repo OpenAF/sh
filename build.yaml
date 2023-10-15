@@ -44,7 +44,7 @@ jobs:
   exec: |
     CDIR=`pwd`
     FOLDER=/tmp/__oaf_{{os}}_{{arch}}_{{version}}_{{dist}}
-    echo Preparing $FOLDER...
+    echo Preparing $FOLDER... 
     rm -rf $FOLDER 2> /dev/null
     mkdir -p $FOLDER/src
     cd $FOLDER/src

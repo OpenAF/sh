@@ -62,8 +62,8 @@ jobs:
       uses: actions/checkout@v4
     
     # -----------------
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+    #- name: Set up QEMU
+    #  uses: docker/setup-qemu-action@v2
 
     ## Add here other steps
     ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
