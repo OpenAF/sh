@@ -89,6 +89,7 @@ jobs:
       .notEquals("filename", "openaf.jar")
       .equals("isFile", true)
       .select(f => {
+        log(" copy " + f.filepath)
         io.cp(f.canonicalPath, "/tmp/_oaf_scripts/" + f.filename)
       })
     } else {
@@ -98,6 +99,7 @@ jobs:
       .equals("isFile", true)
       .select(f => {
         try {
+          log(" processing " + f.filepath)
           // Read contents of file
           var _c = io.readFileString(f.canonicalPath)
 
