@@ -75,6 +75,7 @@ jobs:
 - name: Build 
   from: 
   - Get OpenAF path
+  - (debug):
   - Build step 1
   exec: |
     // Build step 2
@@ -124,3 +125,4 @@ jobs:
 - name: Get OpenAF path
   exec: |
     args.oafpath = getOpenAFPath()
+    log("OpenAF path = " + args.oafpath)
