@@ -32,6 +32,9 @@ todo:
     output    : oaf-mac-aarch64
     main      : /tmp/_oaf_scripts
 
+ojob:
+  catch       : printErrnl("[" + job.name + "] "); if (isDef(exception.javaException)) exception.javaException.printStackTrace(); else printErr(exception)
+
 jobs:
 # ------------------
 - name: Build step 1
