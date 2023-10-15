@@ -1,4 +1,4 @@
-name: Build action
+name: Build All
 
 on  :
   ## Comment the entries below you won't be needing
@@ -127,6 +127,9 @@ jobs:
     # -----------------
     #- name: Set up QEMU
     #  uses: docker/setup-qemu-action@v2
+    - name: Create folder
+      run : |
+        mkdir nightly
 
     ## Add here other steps
     ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
@@ -190,6 +193,9 @@ jobs:
     # -----------------
     #- name: Set up QEMU
     #  uses: docker/setup-qemu-action@v2
+    - name: Create folder
+      run : |
+        mkdir t8
 
     ## Add here other steps
     ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
