@@ -38,7 +38,7 @@ on  :
   #      default    : 'some value'
 
 jobs:
-  build:
+  build-stable:
     runs-on: ubuntu-latest 
     permissions:
       contents     : write
@@ -73,7 +73,7 @@ jobs:
       env :
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        ojob: build.yaml
+        ojob: buildStable.yaml
         dist: nightly
 
     # ------------------------------------
@@ -100,3 +100,129 @@ jobs:
       with:
         name: oaf-mac-aarch64
         path: oaf-mac-aarch64.tgz
+
+  build-nightly:
+    runs-on: ubuntu-latest 
+    permissions:
+      contents     : write
+      pull-requests: write
+
+    steps  :
+    ## To use an input, if defined, just refer to ${{ github.event.inputs.inputOne }}
+
+    ## This action will cache the OpenAF runtime used by openaf/ojob-action to avoid reinstalling 
+    ## everytime the action is invoked. It should be cleared manually from time to time in order
+    ## to use a more updated runtime.
+    # --------------------------
+    - name: Cache OpenAF runtime
+      uses: actions/cache@v3
+      with:
+        key : oaf-nightly
+        path: /tmp/oaf
+
+    # --------------
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    # -----------------
+    #- name: Set up QEMU
+    #  uses: docker/setup-qemu-action@v2
+
+    ## Add here other steps
+    ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
+
+    - name: Build Linux x64
+      uses: openaf/ojob-action@v4
+      env :
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        ojob: buildNightly.yaml
+        dist: nightly
+
+    # ------------------------------------
+    - name: Upload output oaf-linux-x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: nightly-oaf-linux-x86_64
+        path: nightly/oaf-linux-x86_64.tgz
+    # -------------------------------------
+    - name: Upload output oaf-linux-aarch64
+      uses: actions/upload-artifact@v3
+      with:
+        name: nightly-oaf-linux-aarch64
+        path: nightly/oaf-linux-aarch64.tgz
+    # ----------------------------------
+    - name: Upload output oaf-mac-x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: nightly-oaf-mac-x86_64
+        path: nightly/oaf-mac-x86_64.tgz
+    # ----------------------------------
+    - name: Upload output oaf-mac-x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: nightly-oaf-mac-aarch64
+        path: nightly/oaf-mac-aarch64.tgz
+
+  build-t8:
+    runs-on: ubuntu-latest 
+    permissions:
+      contents     : write
+      pull-requests: write
+
+    steps  :
+    ## To use an input, if defined, just refer to ${{ github.event.inputs.inputOne }}
+
+    ## This action will cache the OpenAF runtime used by openaf/ojob-action to avoid reinstalling 
+    ## everytime the action is invoked. It should be cleared manually from time to time in order
+    ## to use a more updated runtime.
+    # --------------------------
+    - name: Cache OpenAF runtime
+      uses: actions/cache@v3
+      with:
+        key : oaf-nightly
+        path: /tmp/oaf
+
+    # --------------
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    # -----------------
+    #- name: Set up QEMU
+    #  uses: docker/setup-qemu-action@v2
+
+    ## Add here other steps
+    ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
+
+    - name: Build Linux x64
+      uses: openaf/ojob-action@v4
+      env :
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        ojob: buildT8.yaml
+        dist: nightly
+
+    # ------------------------------------
+    - name: Upload output oaf-linux-x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: t8-oaf-linux-x86_64
+        path: t8/oaf-linux-x86_64.tgz
+    # -------------------------------------
+    - name: Upload output oaf-linux-aarch64
+      uses: actions/upload-artifact@v3
+      with:
+        name: t8-oaf-linux-aarch64
+        path: t8/oaf-linux-aarch64.tgz
+    # ----------------------------------
+    - name: Upload output oaf-mac-x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: t8-oaf-mac-x86_64
+        path: t8/oaf-mac-x86_64.tgz
+    # ----------------------------------
+    - name: Upload output oaf-mac-x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: t8-oaf-mac-aarch64
+        path: t8/oaf-mac-aarch64.tgz

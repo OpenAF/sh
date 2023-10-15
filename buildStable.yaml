@@ -1,0 +1,39 @@
+todo:
+- name: Build
+  args:
+    dockerArch: amd64
+    os        : linux
+    arch      : x64
+    version   : 21
+    dist      : 
+    output    : oaf-linux-x86_64
+
+- name: Build
+  args:
+  - dockerArch: arm64
+    os        : linux
+    arch      : aarch64
+    version   : 21
+    dist      : 
+    output    : oaf-linux-aarch64
+    main      : /tmp/_oaf_scripts
+  - dockerArch: amd64
+    os        : mac
+    arch      : x64
+    version   : 21
+    dist      : 
+    output    : oaf-mac-x86_64
+    main      : /tmp/_oaf_scripts
+  - dockerArch: arm64
+    os        : mac
+    arch      : aarch64
+    version   : 21
+    dist      : 
+    output    : oaf-mac-aarch64
+    main      : /tmp/_oaf_scripts
+
+ojob:
+  catch       : printErrnl("[" + job.name + "] "); if (isDef(exception.javaException)) exception.javaException.printStackTrace(); else printErr(exception)
+
+jobsInclude:
+- common.yaml
