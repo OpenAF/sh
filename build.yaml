@@ -97,18 +97,20 @@ jobs:
       .notEquals("filename", "openaf.jar")
       .equals("isFile", true)
       .select(f => {
-        // Read contents of file
-        var _c = io.readFileString(f.canonicalPath)
+        try {
+          // Read contents of file
+          var _c = io.readFileString(f.canonicalPath)
 
-        // Replace JAVA_HOME="$DIR/jre" by the appropriate folder
-        var whereIsJava = $sh("find . | egrep /bin/java$").pwd(args.FOLDER + "/src").get(0).stdout.replace(/\n/g, "")
-        whereIsJava = whereIsJava.replace(/^\.\//, "").replace(/\/bin\/java/, "")
-        _c = _c.replace(/JAVA_HOME=\"\$DIR\/jre\"/, "JAVA_HOME=\"\$DIR\/" + whereIsJava + "\"")
+          // Replace JAVA_HOME="$DIR/jre" by the appropriate folder
+          var whereIsJava = $sh("find . | egrep /bin/java$").pwd(args.FOLDER + "/src").get(0).stdout.replace(/\n/g, "")
+          whereIsJava = whereIsJava.replace(/^\.\//, "").replace(/\/bin\/java/, "")
+          _c = _c.replace(/JAVA_HOME=\"\$DIR\/jre\"/, "JAVA_HOME=\"\$DIR\/" + whereIsJava + "\"")
 
-        // Write changed contents 
-        log(" writing " + f.filename + " in " + args.FOLDER + "/src")
-        io.writeFileString(args.FOLDER + "/src/" + f.filename, _c)
-        $sh("chmod a+x " + args.FOLDER + "/src/" + f.filename).exec()
+          // Write changed contents 
+          log(" writing " + f.filename + " in " + args.FOLDER + "/src")
+          io.writeFileString(args.FOLDER + "/src/" + f.filename, _c)
+          $sh("chmod a+x " + args.FOLDER + "/src/" + f.filename).exec()
+        } catch(ee) { printErr("ERROR: " + ee) }
       })
     }
   to  :
