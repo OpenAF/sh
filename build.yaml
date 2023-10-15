@@ -44,6 +44,7 @@ jobs:
   exec: |
     CDIR=`pwd`
     FOLDER=/tmp/__oaf_{{os}}_{{arch}}_{{version}}_{{dist}}
+    echo Preparing $FOLDER...
     rm -rf $FOLDER 2> /dev/null
     mkdir -p $FOLDER/src
     cd $FOLDER/src
@@ -94,6 +95,7 @@ jobs:
       })
     } else {
       // List files that aren't openaf.jar
+      log("Listing files in " + args.main + "...")
       $from(io.listFiles(args.main).files)
       .notEquals("filename", "openaf.jar")
       .equals("isFile", true)
