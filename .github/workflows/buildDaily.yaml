@@ -3,16 +3,16 @@ name: Build Daily
 on  :
   ## Comment the entries below you won't be needing
   #  (and double-check if you repo uses 'main' or 'master')
-  push        :
-    branches:
-    - main
+  #push        :
+  #  branches:
+  #  - main
     #paths:
     #- 'xyz/**'
     #paths-ignore:
     #- '.github/**'
-  pull_request:
-    branches:
-    - main
+  #pull_request:
+  #  branches:
+  #  - main
     #paths:
     #- 'xyz/**'
     #paths-ignore:
