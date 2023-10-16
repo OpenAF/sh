@@ -29,6 +29,12 @@ Current list of available builds:
 
 > Note: currently all files are built with Java Runtime Environment version 21 for each of the corresponding architectures.
 
+You can use an existing OpenAF installation to generate a bash-only download URL by executing, for example (replacing https by http):
+
+```bash
+ojob ojob.io/unix/bashDownload url=http://openaf.io/oaf-linux-x86_64
+```
+
 ## Usage
 
 ### Linux Intel
