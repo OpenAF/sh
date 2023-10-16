@@ -5,7 +5,7 @@ todo:
     os        : linux
     arch      : x64
     version   : 21
-    dist      : 
+    dist      : ""
     output    : oaf-linux-x86_64
 
 - name: Build
@@ -14,21 +14,21 @@ todo:
     os        : linux
     arch      : aarch64
     version   : 21
-    dist      : 
+    dist      : ""
     output    : oaf-linux-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: amd64
     os        : mac
     arch      : x64
     version   : 21
-    dist      : 
+    dist      : ""
     output    : oaf-mac-x86_64
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : mac
     arch      : aarch64
     version   : 21
-    dist      : 
+    dist      : ""
     output    : oaf-mac-aarch64
     main      : /tmp/_oaf_scripts
 

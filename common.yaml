@@ -27,12 +27,15 @@ jobs:
     cd $FOLDER
     {{oafpath}}ojob ojob.io/unix/genSelfExtract file=oaf path=src setup=\$0 tmppath=/tmp/_oaf_{{os}}_{{arch}}_{{version}}_{{dist}}`java -jar src/openaf.jar -c 'printnl(getVersion())'`
     rm -rf src
-    ln -s oaf ojob
-    ln -s oaf oafc
-    ln -s oaf opack
-    ln -s oaf oaf-sb
-    ln -s oaf ojob-sb
-    tar czf $CDIR/{{output}}.tgz .
+    sed -i '2s/.*/[ "$(basename $0)" != "oaf" ] \&\& [ "$(basename $0)" != "ojob" ] \&\& [ "$(basename $0)" != "opack" ] \&\& [ "$(basename $0)" != "oafc" ] \&\& [ "$(basename $0)" != "ojob-sh" ] \&\& [ "$(basename $0)" != "oaf-sh" ] \&\& ln -sf "$(realpath $0)" oaf \&\& ln -sf "$(realpath $0)" ojob \&\& ln -sf "$(realpath $0)" opack \&\& ln -sf "$(realpath $0)" oafc \&\& ln -sf "$(realpath $0)" ojob-sb \&\& ln -sf "$(realpath $0)" oaf-sb \&\& echo "Please use the created symlinks: oaf, ojob, opack, oafc, oaf-sb or ojob-sb" \&\& exit 0/' oaf
+    #sed -i '3s/.*/[ "$(basename $0)" != "oaf" ] \&\& [ "$(basename $0)" != "ojob" ] \&\& [ "$(basename $0)" != "opack" ] \&\& [ "$(basename $0)" != "oafc" ] \&\& [ "$(basename $0)" != "ojob-sh" ] \&\& [ "$(basename $0)" != "oaf-sh" ] \&\& exit 0/' oaf
+    #ln -s oaf ojob
+    #ln -s oaf oafc
+    #ln -s oaf opack
+    #ln -s oaf oaf-sb
+    #ln -s oaf ojob-sb
+    #tar czf $CDIR/{{output}}.tgz .
+    mv oaf $CDIR/{{output}}
 
 # -----------
 - name: Build 

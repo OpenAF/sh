@@ -76,30 +76,41 @@ jobs:
         ojob: buildStable.yaml
         dist: nightly
 
-    # ------------------------------------
-    - name: Upload output oaf-linux-x86_64
-      uses: actions/upload-artifact@v3
+    # --------------------
+    - name: Prepare output
+      run : |
+        mkdir output
+        mv oaf-* output
+
+    # -----------------------
+    - name: Copy build result
+      uses: openaf/ojob-action@v4
+      env :
+        OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
-        name: oaf-linux-x86_64
-        path: oaf-linux-x86_64.tgz
-    # -------------------------------------
-    - name: Upload output oaf-linux-aarch64
-      uses: actions/upload-artifact@v3
-      with:
-        name: oaf-linux-aarch64
-        path: oaf-linux-aarch64.tgz
-    # ----------------------------------
-    - name: Upload output oaf-mac-x86_64
-      uses: actions/upload-artifact@v3
-      with:
-        name: oaf-mac-x86_64
-        path: oaf-mac-x86_64.tgz
-    # ----------------------------------
-    - name: Upload output oaf-mac-x86_64
-      uses: actions/upload-artifact@v3
-      with:
-        name: oaf-mac-aarch64
-        path: oaf-mac-aarch64.tgz
+        dist  : nightly
+        def   : |
+          ojob:
+            opacks: 
+            - S3
+          
+          include: 
+          - s3.yaml
+            
+          todo:
+          - Copy build result
+          
+          jobs:
+          - name: Copy build result
+            to  :
+            - (secget)  : OS_OAFSH
+              ((secEnv)): true
+            - name: S3 Sync folder
+              args:
+                squash   : remote
+                localPath: output
+                bucket   : oafsh
+                execute  : true
 
   build-nightly:
     runs-on: ubuntu-latest 
@@ -142,30 +153,42 @@ jobs:
         ojob: buildNightly.yaml
         dist: nightly
 
-    # ------------------------------------
-    - name: Upload output oaf-linux-x86_64
-      uses: actions/upload-artifact@v3
+    # --------------------
+    - name: Prepare output
+      run : |
+        mv nightly output
+
+    # -----------------------
+    - name: Copy build result
+      uses: openaf/ojob-action@v4
+      env :
+        OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
-        name: nightly-oaf-linux-x86_64
-        path: nightly/oaf-linux-x86_64.tgz
-    # -------------------------------------
-    - name: Upload output oaf-linux-aarch64
-      uses: actions/upload-artifact@v3
-      with:
-        name: nightly-oaf-linux-aarch64
-        path: nightly/oaf-linux-aarch64.tgz
-    # ----------------------------------
-    - name: Upload output oaf-mac-x86_64
-      uses: actions/upload-artifact@v3
-      with:
-        name: nightly-oaf-mac-x86_64
-        path: nightly/oaf-mac-x86_64.tgz
-    # ----------------------------------
-    - name: Upload output oaf-mac-x86_64
-      uses: actions/upload-artifact@v3
-      with:
-        name: nightly-oaf-mac-aarch64
-        path: nightly/oaf-mac-aarch64.tgz
+        dist  : nightly
+        def   : |
+          ojob:
+            opacks: 
+            - S3
+          
+          include: 
+          - s3.yaml
+            
+          todo:
+          - Copy build result
+          
+          jobs:
+          - name: Copy build result
+            to  :
+            - (secget)  : OS_OAFSH
+              ((secEnv)): true
+            - name: S3 Sync folder
+              args:
+                squash   : remote
+                localPath: output
+                prefix   : nightly/
+                bucket   : oafsh
+                execute  : true
+
 
   build-t8:
     runs-on: ubuntu-latest 
@@ -208,27 +231,38 @@ jobs:
         ojob: buildT8.yaml
         dist: nightly
 
-    # ------------------------------------
-    - name: Upload output oaf-linux-x86_64
-      uses: actions/upload-artifact@v3
+    # --------------------
+    - name: Prepare output
+      run : |
+        mv t8 output
+
+    # -----------------------
+    - name: Copy build result
+      uses: openaf/ojob-action@v4
+      env :
+        OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
-        name: t8-oaf-linux-x86_64
-        path: t8/oaf-linux-x86_64.tgz
-    # -------------------------------------
-    - name: Upload output oaf-linux-aarch64
-      uses: actions/upload-artifact@v3
-      with:
-        name: t8-oaf-linux-aarch64
-        path: t8/oaf-linux-aarch64.tgz
-    # ----------------------------------
-    - name: Upload output oaf-mac-x86_64
-      uses: actions/upload-artifact@v3
-      with:
-        name: t8-oaf-mac-x86_64
-        path: t8/oaf-mac-x86_64.tgz
-    # ----------------------------------
-    - name: Upload output oaf-mac-x86_64
-      uses: actions/upload-artifact@v3
-      with:
-        name: t8-oaf-mac-aarch64
-        path: t8/oaf-mac-aarch64.tgz
+        dist  : nightly
+        def   : |
+          ojob:
+            opacks: 
+            - S3
+          
+          include: 
+          - s3.yaml
+            
+          todo:
+          - Copy build result
+          
+          jobs:
+          - name: Copy build result
+            to  :
+            - (secget)  : OS_OAFSH
+              ((secEnv)): true
+            - name: S3 Sync folder
+              args:
+                squash   : remote
+                localPath: output
+                prefix   : t8/
+                bucket   : oafsh
+                execute  : true
