@@ -25,7 +25,7 @@ Current list of available builds:
 | t8 | Linux | x86_64 | https://openaf.io/t8/oaf-linux-x86_64 |
 | t8 | Linux | aarch64 | https://openaf.io/t8/oaf-linux-aarch64 |
 | t8 | Mac | x64_64 | https://openaf.io/t8/oaf-mac-x86_64 |
-| t8 | Max | aarch64 | https://openaf.io/t8/oaf-mac-aarch64 | 
+| t8 | Mac | aarch64 | https://openaf.io/t8/oaf-mac-aarch64 | 
 
 > Note: currently all files are built with Java Runtime Environment version 21 for each of the corresponding architectures.
 
