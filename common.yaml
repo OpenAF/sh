@@ -48,6 +48,7 @@ jobs:
     if (isUnDef(args.main)) {
       // Find java and use it
       $sh("`find . | egrep /bin/java$` -jar openaf.jar --install")
+      .sh("rm .opack.db")
       .pwd(args.FOLDER + "/src")
       .exec()
       io.rm("/tmp/_oaf_scripts")
