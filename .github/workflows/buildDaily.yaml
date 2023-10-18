@@ -71,7 +71,7 @@ jobs:
     ## Add here other steps
     ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
 
-    - name: Build Linux x64
+    - name: Build nightly
       uses: openaf/ojob-action@v4
       env :
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -149,7 +149,7 @@ jobs:
     ## Add here other steps
     ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
 
-    - name: Build Linux x64
+    - name: Build T8
       uses: openaf/ojob-action@v4
       env :
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

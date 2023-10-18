@@ -31,6 +31,20 @@ todo:
     dist      : nightly
     output    : nightly/oaf-mac-aarch64
     main      : /tmp/_oaf_scripts
+  - dockerArch: arm64
+    os        : alpine-linux
+    arch      : aarch64
+    version   : 21
+    dist      : nightly
+    output    : nightly/oaf-alpine-aarch64
+    main      : /tmp/_oaf_scripts
+  - dockerArch: amd64
+    os        : alpine-linux
+    arch      : x64
+    version   : 21
+    dist      : nightly
+    output    : nightly/oaf-alpine-x86_64
+    main      : /tmp/_oaf_scripts   
 
 ojob:
   catch       : printErrnl("[" + job.name + "] "); if (isDef(exception.javaException)) exception.javaException.printStackTrace(); else printErr(exception)
