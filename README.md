@@ -16,14 +16,20 @@ Current list of available builds:
 |---------------------|----|--------------|------|
 | stable | Linux | x86_64 | https://openaf.io/oaf-linux-x86_64 |
 | stable | Linux | aarch64 | https://openaf.io/oaf-linux-aarch64 |
+| stable | Alpine Linux | x86_64 | https://openaf.io/oaf-alpine-x86_64 |
+| stable | Alpine Linux | aarch64 | https://openaf.io/oaf-alpine-aarch64 |
 | stable | Mac | x64_64 | https://openaf.io/oaf-mac-x86_64 |
 | stable | Mac | aarch64 | https://openaf.io/oaf-mac-aarch64 | 
 | nightly | Linux | x86_64 | https://openaf.io/nightly/oaf-linux-x86_64 |
 | nightly | Linux | aarch64 | https://openaf.io/nightly/oaf-linux-aarch64 |
+| nightly | Alpine Linux | x86_64 | https://openaf.io/nightly/oaf-alpine-x86_64 |
+| nightly | Alpine Linux | aarch64 | https://openaf.io/nightly/oaf-alpine-aarch64 |
 | nightly | Mac | x64_64 | https://openaf.io/nightly/oaf-mac-x86_64  |
 | nightly | Mac | aarch64 | https://openaf.io/nightly/oaf-mac-aarch64 | 
 | t8 | Linux | x86_64 | https://openaf.io/t8/oaf-linux-x86_64 |
 | t8 | Linux | aarch64 | https://openaf.io/t8/oaf-linux-aarch64 |
+| t8 | Alpine Linux | x86_64 | https://openaf.io/t8/oaf-alpine-x86_64 |
+| t8 | Alpine Linux | aarch64 | https://openaf.io/t8/oaf-alpine-aarch64 |
 | t8 | Mac | x64_64 | https://openaf.io/t8/oaf-mac-x86_64 |
 | t8 | Mac | aarch64 | https://openaf.io/t8/oaf-mac-aarch64 | 
 
