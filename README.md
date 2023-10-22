@@ -35,10 +35,10 @@ Current list of available builds:
 
 > Note: currently all files are built with Java Runtime Environment version 21 for each of the corresponding architectures.
 
-You can use an existing OpenAF installation to generate a bash-only download URL by executing, for example (replacing https by http):
+You can also run the following command directly using only bash:
 
 ```bash
-ojob ojob.io/unix/bashDownload url=http://openaf.io/oaf-linux-x86_64
+/bin/bash -c "exec 3<>/dev/tcp/ojob.io/80 && echo -e \"GET /getStatic.sh HTTP/1.1\nHost: ojob.io\nUser-Agent: curl\nConnection: close\n\n\" >&3 && cat <&3" | sed '1,/connection: close/d' | tail -n +2 > getStatic.sh && sh getStatic.sh && rm getStatic.sh
 ```
 
 ## Usage
