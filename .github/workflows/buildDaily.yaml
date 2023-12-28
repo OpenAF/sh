@@ -92,7 +92,7 @@ jobs:
       with:
         dist  : nightly
         ojob  : 'ojob.io/s3/ops'
-        args  : 'op=mput bucket=oafsh remote="t8/" local=output secRepo=system secBucket=envs secKey=OS_OAFSH'
+        args  : 'op=mput bucket=oafsh remote="t8/" local=output secRepo=system secBucket=envs secKey=OS_OAFSH secDontAsk=true'
         # def   : |
         #   ojob:
         #     opacks: 
@@ -172,7 +172,7 @@ jobs:
       with:
         dist  : nightly
         ojob  : 'ojob.io/s3/ops'
-        args  : 'op=mput bucket=oafsh remote="t8/" local=output secRepo=system secBucket=envs secKey=OS_OAFSH'
+        args  : 'op=mput bucket=oafsh remote="t8/" local=output secRepo=system secBucket=envs secKey=OS_OAFSH secDontAsk=true'
         # def   : |
         #   ojob:
         #     opacks: 
