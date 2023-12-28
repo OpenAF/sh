@@ -91,29 +91,31 @@ jobs:
         OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
         dist  : nightly
-        def   : |
-          ojob:
-            opacks: 
-            - S3
+        ojob  : 'ojob.io/s3/ops'
+        args  : 'op=mput bucket=oafsh remote="t8/" local=output secRepo=system secBucket=envs secKey=OS_OAFSH'
+        # def   : |
+        #   ojob:
+        #     opacks: 
+        #     - S3
           
-          include: 
-          - s3.yaml
+        #   include: 
+        #   - s3.yaml
             
-          todo:
-          - Copy build result
+        #   todo:
+        #   - Copy build result
           
-          jobs:
-          - name: Copy build result
-            to  :
-            - (secget)  : OS_OAFSH
-              ((secEnv)): true
-            - name: S3 Sync folder
-              args:
-                squash   : remote
-                localPath: output
-                prefix   : nightly/
-                bucket   : oafsh
-                execute  : true
+        #   jobs:
+        #   - name: Copy build result
+        #     to  :
+        #     - (secget)  : OS_OAFSH
+        #       ((secEnv)): true
+        #     - name: S3 Sync folder
+        #       args:
+        #         squash   : remote
+        #         localPath: output
+        #         prefix   : nightly/
+        #         bucket   : oafsh
+        #         execute  : true
 
 
   build-t8:
@@ -169,26 +171,28 @@ jobs:
         OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
         dist  : nightly
-        def   : |
-          ojob:
-            opacks: 
-            - S3
+        ojob  : 'ojob.io/s3/ops'
+        args  : 'op=mput bucket=oafsh remote="t8/" local=output secRepo=system secBucket=envs secKey=OS_OAFSH'
+        # def   : |
+        #   ojob:
+        #     opacks: 
+        #     - S3
           
-          include: 
-          - s3.yaml
+        #   include: 
+        #   - s3.yaml
             
-          todo:
-          - Copy build result
+        #   todo:
+        #   - Copy build result
           
-          jobs:
-          - name: Copy build result
-            to  :
-            - (secget)  : OS_OAFSH
-              ((secEnv)): true
-            - name: S3 Sync folder
-              args:
-                squash   : remote
-                localPath: output
-                prefix   : t8/
-                bucket   : oafsh
-                execute  : true
+        #   jobs:
+        #   - name: Copy build result
+        #     to  :
+        #     - (secget)  : OS_OAFSH
+        #       ((secEnv)): true
+        #     - name: S3 Sync folder
+        #       args:
+        #         squash   : remote
+        #         localPath: output
+        #         prefix   : t8/
+        #         bucket   : oafsh
+        #         execute  : true
