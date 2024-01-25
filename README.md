@@ -2,9 +2,19 @@
 
 Builds single static file OpenAF executables for Linux and Mac. These single files can be copied and used, without any installation or privilege access (e.g. power user or root), to run OpenAF scripts and oJobs. 
 
-> All extra files (for example, opacks) are kept in temporary folders. To ensure that they get loaded properly just use the OpenAF function _includeOPack_ or fill the corresponding oJob "opacks" section. For "air-gap" environments (without Internet) you just need to place the necessary .opack files in the same folder from where you are running you script or oJob
+To download and use (_curl_, _bash_ and _tar_ are required):
 
-Current list of available builds:
+```bash
+curl https://openaf.io/getStatic.sh | sh
+```
+
+If you don't have curl you can run the following command directly using only bash:
+
+```bash
+/bin/bash -c "exec 3<>/dev/tcp/ojob.io/80 && echo -e \"GET /getStatic.sh HTTP/1.1\nHost: ojob.io\nUser-Agent: curl\nConnection: close\n\n\" >&3 && cat <&3" | sed '1,/connection: close/d' | tail -n +2 > getStatic.sh && sh getStatic.sh && rm getStatic.sh
+```
+
+To download directly for a specific distribution, OS and/or architecture choose one of the following available builds:
 
 | OpenAF distribution | OS | Architecture | Link |
 |---------------------|----|--------------|------|
@@ -29,13 +39,9 @@ Current list of available builds:
 
 > Note: currently all files are built with Java Runtime Environment version 21 for each of the corresponding architectures.
 
-You can also run the following command directly using only bash:
+> All extra files (for example, opacks) are kept in temporary folders. To ensure that they get loaded properly just use the OpenAF function _includeOPack_ or fill the corresponding oJob "opacks" section. For "air-gap" environments (without Internet) you just need to place the necessary .opack files in the same folder from where you are running you script or oJob
 
-```bash
-/bin/bash -c "exec 3<>/dev/tcp/ojob.io/80 && echo -e \"GET /getStatic.sh HTTP/1.1\nHost: ojob.io\nUser-Agent: curl\nConnection: close\n\n\" >&3 && cat <&3" | sed '1,/connection: close/d' | tail -n +2 > getStatic.sh && sh getStatic.sh && rm getStatic.sh
-```
-
-## Usage
+## Manual usage
 
 ### Linux Intel
 
