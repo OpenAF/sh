@@ -1,11 +1,5 @@
 # sh
 
----
-
-**These build files are currently in testing. Please follow the install instructions in https://docs.openaf.io.**
-
----
-
 Builds single static file OpenAF executables for Linux and Mac. These single files can be copied and used, without any installation or privilege access (e.g. power user or root), to run OpenAF scripts and oJobs. 
 
 > All extra files (for example, opacks) are kept in temporary folders. To ensure that they get loaded properly just use the OpenAF function _includeOPack_ or fill the corresponding oJob "opacks" section. For "air-gap" environments (without Internet) you just need to place the necessary .opack files in the same folder from where you are running you script or oJob
