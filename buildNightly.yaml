@@ -10,6 +10,12 @@ todo:
 
 - name: Build
   args:
+  - os        : linux
+    arch      : arm
+    version   : 17
+    dist      : nightly
+    output    : nightly/oaf-linux-arm
+    main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : linux
     arch      : aarch64
