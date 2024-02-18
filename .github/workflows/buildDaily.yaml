@@ -120,6 +120,7 @@ jobs:
 
   build-t8:
     runs-on: ubuntu-latest 
+    needs  : build-nightly 
     permissions:
       contents     : write
       pull-requests: write
