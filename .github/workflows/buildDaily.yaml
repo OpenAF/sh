@@ -74,7 +74,7 @@ jobs:
     - name: Build nightly
       uses: openaf/ojob-action@v4
       env :
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         ojob: buildNightly.yaml
         dist: nightly

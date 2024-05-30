@@ -71,7 +71,7 @@ jobs:
     - name: Build stable
       uses: openaf/ojob-action@v4
       env :
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         ojob: buildStable.yaml
         dist: nightly
@@ -89,26 +89,28 @@ jobs:
         OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
         dist  : nightly
-        def   : |
-          ojob:
-            opacks: 
-            - S3
+        ojob  : 'ojob.io/s3/ops'
+        args  : 'op=mput bucket=oafsh remote="" local="output/*" secEnv=true secKey=OS_OAFSH'
+        # def   : |
+        #   ojob:
+        #     opacks: 
+        #     - S3
           
-          include: 
-          - s3.yaml
+        #   include: 
+        #   - s3.yaml
             
-          todo:
-          - Copy build result
+        #   todo:
+        #   - Copy build result
           
-          jobs:
-          - name: Copy build result
-            to  :
-            - (secget)  : OS_OAFSH
-              ((secEnv)): true
-            - name: S3 Sync folder
-              args:
-                squash   : remote
-                localPath: output
-                bucket   : oafsh
-                execute  : true
+        #   jobs:
+        #   - name: Copy build result
+        #     to  :
+        #     - (secget)  : OS_OAFSH
+        #       ((secEnv)): true
+        #     - name: S3 Sync folder
+        #       args:
+        #         squash   : remote
+        #         localPath: output
+        #         bucket   : oafsh
+        #         execute  : true
 
