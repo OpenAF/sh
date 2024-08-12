@@ -91,7 +91,7 @@ jobs:
         OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
         dist  : nightly
-        ojob  : 'ojob.io/s3/ops'
+        ojob  : 'ops.yaml'
         args  : 'op=mput bucket=oafsh remote=nightly/ local="output/*" secEnv=true secKey=OS_OAFSH'
         # def   : |
         #   ojob:
@@ -172,7 +172,7 @@ jobs:
         OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
         dist  : nightly
-        ojob  : 'ojob.io/s3/ops'
+        ojob  : 'ops.yaml'
         args  : 'op=mput bucket=oafsh remote=t8/ local="output/*" secEnv=true secKey=OS_OAFSH'
         # def   : |
         #   ojob:
