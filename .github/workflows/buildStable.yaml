@@ -52,7 +52,7 @@ jobs:
     ## to use a more updated runtime.
     # --------------------------
     - name: Cache OpenAF runtime
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         key : oaf-nightly
         path: /tmp/oaf
@@ -69,7 +69,7 @@ jobs:
     ## If you used workflow_run you can access ${{ github.event.workflow }} and ${{ github.event.workflow_run.conclusion }}
 
     - name: Build stable
-      uses: openaf/ojob-action@v4
+      uses: openaf/ojob-action@v7
       env :
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -84,7 +84,7 @@ jobs:
 
     # -----------------------
     - name: Copy build result
-      uses: openaf/ojob-action@v4
+      uses: openaf/ojob-action@v7
       env :
         OS_OAFSH: ${{ secrets.OS_OAFSH }}
       with:
