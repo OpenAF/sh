@@ -85,9 +85,6 @@ ojob:
   catch       : logErr(exception);
   logToConsole: false   # to change when finished
 
-include:
-- ojob.yaml
-
 jobs:
 # -----------------
 - name : S3 connect
