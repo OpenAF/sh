@@ -12,7 +12,7 @@ todo:
   args:
   - os        : linux
     arch      : arm
-    version   : 17
+    version   : 21
     dist      : t8
     output    : t8/oaf-linux-arm
     main      : /tmp/_oaf_scripts
