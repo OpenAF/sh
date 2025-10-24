@@ -4,22 +4,22 @@ todo:
     dockerArch: amd64
     os        : linux
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : t8
     output    : t8/oaf-linux-x86_64
 
 - name: Build
   args:
   - os        : linux
-    arch      : arm
-    version   : 21
+    arch      : aarch64
+    version   : 25
     dist      : t8
     output    : t8/oaf-linux-arm
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : linux
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : t8
     output    : t8/oaf-linux-aarch64
     main      : /tmp/_oaf_scripts
@@ -33,21 +33,21 @@ todo:
   - dockerArch: arm64
     os        : mac
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : t8
     output    : t8/oaf-mac-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : alpine-linux
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : t8
     output    : t8/oaf-alpine-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: amd64
     os        : alpine-linux
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : t8
     output    : t8/oaf-alpine-x86_64
     main      : /tmp/_oaf_scripts   
