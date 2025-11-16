@@ -53,7 +53,7 @@ todo:
     main      : /tmp/_oaf_scripts   
 
 ojob:
-  catch       : printErrnl("[" + job.name + "] "); if (isDef(exception.javaException)) exception.javaException.printStackTrace(); else printErr(exception)
+  catch       : printErrnl("[" + job.name + "] "); $err(exception, __, __, job.exec)
 
 jobsInclude:
 - common.yaml

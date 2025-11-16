@@ -4,7 +4,7 @@ jobs:
   lang: shell
   typeArgs:
     shellPrefix: build1
-  exec: |
+  exec: | #shell
     CDIR=`pwd`
     FOLDER=/tmp/__oaf_{{os}}_{{arch}}_{{version}}{{#if dist}}_{{dist}}{{/if}}
     echo Preparing $FOLDER... 
@@ -23,7 +23,7 @@ jobs:
   lang: shell
   typeArgs:
     shellPrefix: build3
-  exec: |
+  exec: | #shell
     cd $FOLDER
     {{oafpath}}ojob $CDIR/genSelfExtract.yaml file=oaf path=src setup=ojob tmppath=/tmp/_oaf_{{os}}_{{arch}}_{{version}}{{#if dist}}_{{dist}}{{/if}}_`java -jar src/openaf.jar -c 'printnl(getVersion())'`
     rm -rf src
@@ -40,7 +40,7 @@ jobs:
   from: 
   - Get OpenAF path
   - Build step 1
-  exec: |
+  exec: | #js
     // Build step 2
     
     if (isUnDef(args.main)) {
@@ -87,6 +87,6 @@ jobs:
 
 # ---------------------
 - name: Get OpenAF path
-  exec: |
+  exec: | #js
     args.oafpath = getOpenAFPath()
     log("OpenAF path = " + args.oafpath)
