@@ -81,6 +81,7 @@ jobs:
       run : |
         mkdir output
         mv oaf-* output
+        /tmp/oaf/opack install S3
 
     # -----------------------
     - name: Copy build result
