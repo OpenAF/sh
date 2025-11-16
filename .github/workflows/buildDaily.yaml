@@ -95,7 +95,13 @@ jobs:
       #  args  : 'op=mput bucket=oafsh remote=nightly/ local="output/*" secEnv=true secKey=OS_OAFSH'
       #  args  : 'op=mput bucket=oafsh remote="" local="output/*" secEnv=true secKey=OS_OAFSH'
       run : |
-        find output -type f -exec /tmp/oaf/ojob ops.yaml op=put bucket=oafsh remote="" local={} secEnv=true secKey=$OS_OAFSH \;
+        find output -type f -exec sh -c '
+            f="$1"
+            /tmp/oaf/ojob ops.yaml op=put bucket=oafsh \
+                remote="nightly/$(basename "$f")" \
+                local="$f" \
+                secEnv=true secKey=OS_OAFSH
+        ' sh {} \;
         # def   : |
         #   ojob:
         #     opacks: 
@@ -179,7 +185,13 @@ jobs:
       #  args  : 'op=mput bucket=oafsh remote=t8/ local="output/*" secEnv=true secKey=OS_OAFSH'
       #  args  : 'op=mput bucket=oafsh remote="" local="output/*" secEnv=true secKey=OS_OAFSH'
       run : |
-        find output -type f -exec /tmp/oaf/ojob ops.yaml op=put bucket=oafsh remote="" local={} secEnv=true secKey=$OS_OAFSH \;
+        find output -type f -exec sh -c '
+            f="$1"
+            /tmp/oaf/ojob ops.yaml op=put bucket=oafsh \
+                remote="t8/$(basename "$f")" \
+                local="$f" \
+                secEnv=true secKey=OS_OAFSH
+        ' sh {} \;
         # def   : |
         #   ojob:
         #     opacks: 
