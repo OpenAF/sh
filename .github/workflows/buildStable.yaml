@@ -85,13 +85,15 @@ jobs:
 
     # -----------------------
     - name: Copy build result
-      uses: openaf/ojob-action@v7
+      #uses: openaf/ojob-action@v7
       env :
         OS_OAFSH: ${{ secrets.OS_OAFSH }}
-      with:
-        dist  : nightly
-        ojob  : 'ops.yaml'
-        args  : 'op=mput bucket=oafsh remote="" local="output/*" secEnv=true secKey=OS_OAFSH'
+      #with:
+      #  dist  : nightly
+      #  ojob  : 'ops.yaml'
+      #  args  : 'op=mput bucket=oafsh remote="" local="output/*" secEnv=true secKey=OS_OAFSH'
+      run : |
+        find output -type f -exec /tmp/oaf/ojob ops.yaml bucket=oafsh remote="" local={} secEnv=true secKey=OS_OAFSH \;
         # def   : |
         #   ojob:
         #     opacks: 
