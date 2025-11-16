@@ -93,7 +93,7 @@ jobs:
       #  ojob  : 'ops.yaml'
       #  args  : 'op=mput bucket=oafsh remote="" local="output/*" secEnv=true secKey=OS_OAFSH'
       run : |
-        find output -type f -exec /tmp/oaf/ojob ops.yaml bucket=oafsh remote="" local={} secEnv=true secKey=OS_OAFSH \;
+        find output -type f -exec /tmp/oaf/ojob ops.yaml op=put bucket=oafsh remote="" local={} secEnv=true secKey=$OS_OAFSH \;
         # def   : |
         #   ojob:
         #     opacks: 
