@@ -233,6 +233,7 @@ jobs:
   test-nightly:
     runs-on: ubuntu-latest
     needs   : build-nightly
+    permissions: {}
 
     steps:
     - name: Download build artifact
@@ -269,6 +270,7 @@ jobs:
   test-t8:
     runs-on: ubuntu-latest
     needs   : build-t8
+    permissions: {}
 
     steps:
     - name: Download build artifact
