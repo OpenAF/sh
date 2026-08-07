@@ -24,6 +24,11 @@ jobs:
   typeArgs:
     shellPrefix: build3
   exec: | #shell
+    # Regenerate the JDK shared archive in the runtime that will be embedded.
+    # This must happen before genSelfExtract packs src into the single-file oaf.
+    cd $FOLDER/src
+    ./oaf --repack
+
     cd $FOLDER
     {{oafpath}}ojob $CDIR/genSelfExtract.yaml file=oaf path=src setup=ojob tmppath=/tmp/_oaf_{{os}}_{{arch}}_{{version}}{{#if dist}}_{{dist}}{{/if}}_`java -jar src/openaf.jar -c 'printnl(getVersion())'`
     rm -rf src
