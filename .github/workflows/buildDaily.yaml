@@ -84,6 +84,13 @@ jobs:
       run : |
         mv nightly output
 
+    # ----------------------------
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: nightly-output
+        path: output/
+
     # -----------------------
     - name: Copy build result
       #uses: openaf/ojob-action@v7
@@ -174,6 +181,13 @@ jobs:
       run : |
         mv t8 output
 
+    # ----------------------------
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: t8-output
+        path: output/
+
     # -----------------------
     - name: Copy build result
       #uses: openaf/ojob-action@v7
@@ -215,3 +229,77 @@ jobs:
         #         prefix   : t8/
         #         bucket   : oafsh
         #         execute  : true
+
+  test-nightly:
+    runs-on: ubuntu-latest
+    needs   : build-nightly
+    permissions: {}
+
+    steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: nightly-output
+        path: output
+
+    - name: Prepare Linux smoke test
+      working-directory: output
+      run: |
+        chmod +x oaf-linux-x86_64
+        ./oaf-linux-x86_64 --install
+        test -L ojob || test -x ojob
+
+    - name: Smoke test Linux x86_64 version
+      working-directory: output
+      run: |
+        ./oaf -v | tee /tmp/oaf-version.txt
+        grep -Eq '[0-9]' /tmp/oaf-version.txt
+
+    - name: Smoke test Linux x86_64 JavaScript execution
+      working-directory: output
+      run: |
+        ./oaf -c 'print("ok")' | tee /tmp/oaf-js.txt
+        grep -qx 'ok' /tmp/oaf-js.txt
+
+    - name: Smoke test Alpine x86_64 artifact
+      working-directory: output
+      run: |
+        chmod +x oaf-alpine-x86_64
+        docker run --rm -v "$PWD:/work" -w /work alpine:latest sh -lc './oaf-alpine-x86_64 --install && (test -L ojob || test -x ojob) && ./oaf -v'
+
+  test-t8:
+    runs-on: ubuntu-latest
+    needs   : build-t8
+    permissions: {}
+
+    steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: t8-output
+        path: output
+
+    - name: Prepare Linux smoke test
+      working-directory: output
+      run: |
+        chmod +x oaf-linux-x86_64
+        ./oaf-linux-x86_64 --install
+        test -L ojob || test -x ojob
+
+    - name: Smoke test Linux x86_64 version
+      working-directory: output
+      run: |
+        ./oaf -v | tee /tmp/oaf-version.txt
+        grep -Eq '[0-9]' /tmp/oaf-version.txt
+
+    - name: Smoke test Linux x86_64 JavaScript execution
+      working-directory: output
+      run: |
+        ./oaf -c 'print("ok")' | tee /tmp/oaf-js.txt
+        grep -qx 'ok' /tmp/oaf-js.txt
+
+    - name: Smoke test Alpine x86_64 artifact
+      working-directory: output
+      run: |
+        chmod +x oaf-alpine-x86_64
+        docker run --rm -v "$PWD:/work" -w /work alpine:latest sh -lc './oaf-alpine-x86_64 --install && (test -L ojob || test -x ojob) && ./oaf -v'
