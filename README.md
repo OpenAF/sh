@@ -37,7 +37,7 @@ To download directly for a specific distribution, OS and/or architecture choose 
 | t8 | Mac | x64_64 | https://openaf.io/t8/oaf-mac-x86_64 |
 | t8 | Mac | aarch64 | https://openaf.io/t8/oaf-mac-aarch64 | 
 
-> Note: currently all files are built with Java Runtime Environment version 21 for each of the corresponding architectures.
+> Note: currently all files are built with Java Runtime Environment version 25 for each of the corresponding architectures.
 
 > All extra files (for example, opacks) are kept in temporary folders. To ensure that they get loaded properly just use the OpenAF function _includeOPack_ or fill the corresponding oJob "opacks" section. For "air-gap" environments (without Internet) you just need to place the necessary .opack files in the same folder from where you are running you script or oJob
 

@@ -152,8 +152,9 @@ jobs:
 
     - name: Smoke test Linux x86_64 version
       working-directory: output
+      shell: bash
       run: |
-        ./oaf -v | tee /tmp/oaf-version.txt
+        ./oaf -v 2>&1 | tee /tmp/oaf-version.txt
         grep -Eq '[0-9]' /tmp/oaf-version.txt
 
     - name: Smoke test Linux x86_64 JavaScript execution

@@ -4,7 +4,7 @@ todo:
     dockerArch: amd64
     os        : linux
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : ""
     output    : oaf-linux-x86_64
 
@@ -13,35 +13,35 @@ todo:
   - dockerArch: arm64
     os        : linux
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : ""
     output    : oaf-linux-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: amd64
     os        : mac
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : ""
     output    : oaf-mac-x86_64
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : mac
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : ""
     output    : oaf-mac-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : alpine-linux
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : ""
     output    : oaf-alpine-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: amd64
     os        : alpine-linux
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : ""
     output    : oaf-alpine-x86_64
     main      : /tmp/_oaf_scripts    

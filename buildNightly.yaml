@@ -4,50 +4,44 @@ todo:
     dockerArch: amd64
     os        : linux
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : nightly
     output    : nightly/oaf-linux-x86_64
 
 - name: Build
   args:
-  - os        : linux
-    arch      : arm
-    version   : 21
-    dist      : nightly
-    output    : nightly/oaf-linux-arm
-    main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : linux
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : nightly
     output    : nightly/oaf-linux-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: amd64
     os        : mac
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : nightly
     output    : nightly/oaf-mac-x86_64
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : mac
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : nightly
     output    : nightly/oaf-mac-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: arm64
     os        : alpine-linux
     arch      : aarch64
-    version   : 21
+    version   : 25
     dist      : nightly
     output    : nightly/oaf-alpine-aarch64
     main      : /tmp/_oaf_scripts
   - dockerArch: amd64
     os        : alpine-linux
     arch      : x64
-    version   : 21
+    version   : 25
     dist      : nightly
     output    : nightly/oaf-alpine-x86_64
     main      : /tmp/_oaf_scripts   
