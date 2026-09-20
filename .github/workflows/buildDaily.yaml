@@ -90,6 +90,7 @@ jobs:
       with:
         name: nightly-output
         path: output/
+        if-no-files-found: error
 
     # -----------------------
     - name: Copy build result
@@ -187,6 +188,7 @@ jobs:
       with:
         name: t8-output
         path: output/
+        if-no-files-found: error
 
     # -----------------------
     - name: Copy build result

@@ -48,7 +48,7 @@ todo:
 
 
 ojob:
-  catch       : printErrnl("[" + job.name + "] "); $err(exception, __, __, job.exec)
+  catch       : printErrnl("[" + job.name + "] "); $err(exception, __, __, job.exec); exit(1)
 
 jobsInclude:
 - common.yaml

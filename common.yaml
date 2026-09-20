@@ -1,12 +1,20 @@
 jobs:
+# --------------------
+- name: Set build paths
+  exec: | #js
+    // Initialize paths before shell execution so output parsing cannot lose them.
+    args.CDIR = io.fileInfo(".").canonicalPath
+    args.FOLDER = "/tmp/__oaf_" + args.os + "_" + args.arch + "_" + args.version + (args.dist ? "_" + args.dist : "")
+
 # ------------------
 - name: Build step 1
   lang: shell
   typeArgs:
     shellPrefix: build1
   exec: | #shell
-    CDIR=`pwd`
-    FOLDER=/tmp/__oaf_{{os}}_{{arch}}_{{version}}{{#if dist}}_{{dist}}{{/if}}
+    set -eu
+    CDIR="{{CDIR}}"
+    FOLDER="{{FOLDER}}"
     echo Preparing $FOLDER... 
     rm -rf $FOLDER 2> /dev/null
     mkdir -p $FOLDER/src
@@ -14,9 +22,7 @@ jobs:
     {{oafpath}}ojob ojob.io/java/download type=jre os={{os}} arch={{arch}} version={{version}} output=jre.tgz
     tar xzf jre.tgz
     rm jre.tgz
-    curl -s https://openaf.io/{{#if dist}}{{dist}}/{{/if}}openaf.jar.repacked -o openaf.jar
-
-    # return CDIR, FOLDER
+    curl -fsSL https://openaf.io/{{#if dist}}{{dist}}/{{/if}}openaf.jar.repacked -o openaf.jar
 
 # ------------------
 - name: Build step 3
@@ -24,12 +30,17 @@ jobs:
   typeArgs:
     shellPrefix: build3
   exec: | #shell
-    # Regenerate the JDK shared archive in the runtime that will be embedded.
-    # This must happen before genSelfExtract packs src into the single-file oaf.
-    cd $FOLDER/src
+    set -eu
+    CDIR="{{CDIR}}"
+    FOLDER="{{FOLDER}}"
+    cd "$FOLDER/src"
+    # Only the first target runs natively on the builder. Cross-target launchers
+    # use their own JRE and cannot be executed here.
+    {{#unless main}}
     ./oaf --repack
+    {{/unless}}
 
-    cd $FOLDER
+    cd "$FOLDER"
     {{oafpath}}ojob $CDIR/genSelfExtract.yaml file=oaf path=src setup=ojob tmppath=/tmp/_oaf_{{os}}_{{arch}}_{{version}}{{#if dist}}_{{dist}}{{/if}}_`java -jar src/openaf.jar -c 'printnl(getVersion())'`
     rm -rf src
     sed -i '3s/.*/[ "$(basename $0)" != "oaf" ] \&\& [ "$(basename $0)" != "ojob" ] \&\& [ "$(basename $0)" != "opack" ] \&\& [ "$(basename $0)" != "oafc" ] \&\& [ "$(basename $0)" != "ojob-sb" ] \&\& [ "$(basename $0)" != "oaf-sb" ] \&\& [ "$(basename $0)" != "oafp" ] \&\& ln -sf "$(realpath $0)" oaf \&\& ln -sf "$(realpath $0)" ojob \&\& ln -sf "$(realpath $0)" opack \&\& ln -sf "$(realpath $0)" oafc \&\& ln -sf "$(realpath $0)" ojob-sb \&\& ln -sf "$(realpath $0)" oaf-sb \&\& ln -sf "$(realpath $0)" oafp \&\& echo "Please use the created symlinks: oaf, ojob, opack, oafc, oafp, oaf-sb or ojob-sb" \&\& exit 0/' oaf
@@ -44,6 +55,7 @@ jobs:
 - name: Build 
   from: 
   - Get OpenAF path
+  - Set build paths
   - Build step 1
   exec: | #js
     // Build step 2
@@ -64,10 +76,11 @@ jobs:
         io.cp(f.canonicalPath, "/tmp/_oaf_scripts/" + f.filename)
       })
     } else {
-      // List files that aren't openaf.jar
+      // Copy launchers, not the native target's binary shared archive.
       log("Listing files in " + args.main + "...")
       $from(io.listFiles(args.main).files)
       .notEquals("filename", "openaf.jar")
+      .notEquals("filename", ".shared.oaf")
       .equals("isFile", true)
       .select(f => {
         try {
@@ -79,6 +92,8 @@ jobs:
           var whereIsJava = $sh("find . | egrep /bin/java$").pwd(args.FOLDER + "/src").get(0).stdout.replace(/\n/g, "")
           whereIsJava = whereIsJava.replace(/^\.\//, "").replace(/\/bin\/java/, "")
           _c = _c.replace(/JAVA_HOME=\"\$DIR\/jre\"/, "JAVA_HOME=\"\$DIR\/" + whereIsJava + "\"")
+          // The builder's CDS archive is not portable across JREs or platforms.
+          _c = _c.replace(/-XX:SharedArchiveFile=\$DIR\/\.shared\.oaf/g, "")
 
           // Write changed contents 
           log(" writing " + f.filename + " in " + args.FOLDER + "/src")

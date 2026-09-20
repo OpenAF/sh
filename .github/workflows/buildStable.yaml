@@ -89,6 +89,7 @@ jobs:
       with:
         name: stable-output
         path: output/
+        if-no-files-found: error
 
     # -----------------------
     - name: Copy build result
